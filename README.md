@@ -17,6 +17,16 @@ To make the solution easier to understand I will divide it to 3 big parts:
 
 To run this script you'll need to have python 3.7 (https://www.python.org/downloads/) and pip (https://pypi.org/project/pip/)
 
-To install the dependencies:
+To download and install the dependencies:
 1) Clone the repository (git clone https://github.com/manos89/ticketmaster-parser.git)
 2) Install the requirements (pip install requirements.txt)
+
+Running the script requires you to input some command line arguments. In general you can run python scripts by typing: 
+python script_name.py where you replace script_name with the name of the .py file, in our case parse.
+
+In our case here's an example on how to run the script:
+python parse.py --key 35dfsdffe342fef4534saed --start 2019-08-01 --end 2019-08-10
+
+You can replace "35dfsdffe342fef4534saed" with your key "2019-08-01" with the starting date you want and "2019-08-10" with the ending date you want.
+
+Please don't forget that you will have to navigate to the directory where the script is. You can do this in many ways, depending on the OS you use.
