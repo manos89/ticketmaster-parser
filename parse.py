@@ -17,8 +17,8 @@ def validate_date(date):
     except AttributeError:
         print("You must provide a proper date of the following format: YYYY-MM-DD")
 
-# def format_date(datetime_obj):
-#     return datetime_obj.strftime("%Y-%m-%d")
+def format_date(datetime_obj):
+    return datetime_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def check_future_date(start_datetime_object, end_datetime_object):
     """
@@ -54,6 +54,8 @@ def main():
     start_datetime_object = validate_date(start)
     end_datetime_object = validate_date(end)
     check_future_date(start_datetime_object, end_datetime_object)
+    start_formatted = format_date(start_datetime_object)
+    end_formatted = format_date(end_datetime_object)
 
 
 if __name__ == "__main__":
