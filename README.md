@@ -10,6 +10,8 @@ To make the solution easier to understand I will divide it to 3 big parts:
   - Then we make the comparison, which is similar to comparing numbers/integers. In real life we can check if 10<11, and in the same way       we can find out if starting date < ending date.
   - Finally, we have to convert them from a datetime object to a text in a format that can be used to make the request (YYYY-MM-               DDTHH:mm:ssZ)
   
+### Summary of first  step:
+Take the input -> check dates format -> convert dates to datetime objects -> perform check of whether those datetime objects are correct -> convert the datetime objects back to string/text
 ## 2) Making the request
 ## 3) Collecting the needed results
 
