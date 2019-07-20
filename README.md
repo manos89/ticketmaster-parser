@@ -13,6 +13,11 @@ To make the solution easier to understand I will divide it to 3 big parts:
 ### Summary of first  step:
 Take the input -> check dates format -> convert dates to datetime objects -> perform check of whether those datetime objects are correct -> convert the datetime objects back to string/text
 ## 2) Making the request
+  - Create the url. We have a URL which has 3 placeholders. We replace them with the API key, starting date, and ending date                 accordingly.
+  - Make the request and return the results in a JSON format. Making the request is exactly the same thing as visiting a webpage in our         browser. The browser displays the page while when we make the request from python we receive the code of this page.
+  
+  ### Summary of second  step:
+  create the url -> make the request -> return the response(code of the page) in a JSON format.
 ## 3) Collecting the needed results
 
 # How to run
@@ -26,9 +31,10 @@ To download and install the dependencies:
 Running the script requires you to input some command line arguments. In general you can run python scripts by typing: 
 python script_name.py where you replace script_name with the name of the .py file, in our case parse.
 
-In our case here's an example on how to run the script:
+Here's an example on how to run the script:
+
 python parse.py --key 35dfsdffe342fef4534saed --start 2019-08-01 --end 2019-08-10
 
 You can replace "35dfsdffe342fef4534saed" with your key "2019-08-01" with the starting date you want and "2019-08-10" with the ending date you want.
 
-Please don't forget that you will have to navigate to the directory where the script is. You can do this in many ways, depending on the OS you use.
+Please, don't forget that you will have to navigate to the directory where the script is. You can do this in many ways, depending on the OS you use.
