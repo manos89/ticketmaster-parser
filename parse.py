@@ -2,6 +2,8 @@ import requests
 import json
 import argparse
 import datetime
+import pandas as pd
+from collections import Counter
 
 def validate_date(date):
     """
@@ -67,7 +69,15 @@ def get_events(data):
     return states_dictionary
 
 
+def get_artist_with_most_shows(events):
+    artists = [artist["_embedded"]["attractions"][0]["id"] for artist in events]
+    most_shows_artist = Counter(artists)
+    return list(most_shows_artist.keys())[0]
 
+def get_venue_with_most_shows(events):
+    venues = [artist["_embedded"]["venues"][0]["id"] for artist in events]
+    most_shows_venues = Counter(venues)
+    return list(most_shows_venues.keys())[0]
 
 def main():
     key, start, end = get_args()
@@ -79,6 +89,11 @@ def main():
     url = create_the_url(key, start_formatted, end_formatted)
     data = make_request(url)
     states_dictionary = get_events(data)
+    for key in states_dictionary.keys():
+        artist_id = get_artist_with_most_shows(states_dictionary[key])
+        venue_id = get_venue_with_most_shows(states_dictionary[key])
+        print(venue_id)
+
 
 
 if __name__ == "__main__":
