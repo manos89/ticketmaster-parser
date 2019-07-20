@@ -32,8 +32,9 @@ def check_future_date(start_datetime_object, end_datetime_object):
     if start_datetime_object > end_datetime_object:
         raise ValueError("Your ending date must be after your starting date")
 
-def get_events():
-    pass
+def make_request(url):
+    r = requests.get(url)
+    return json.loads(r.text)
 
 def get_args():
     """
@@ -49,6 +50,10 @@ def get_args():
     args = parser.parse_args()
     return args.key, args.start, args.end
 
+def create_the_url(key, start, end):
+    return "https://app.ticketmaster.com/discovery/v2/events?apikey={0}&locale=&preferredCountry=us&size=200" \
+           "&startDateTime={1}&endDateTime={2}".format(key, start, end)
+
 def main():
     key, start, end = get_args()
     start_datetime_object = validate_date(start)
@@ -56,6 +61,9 @@ def main():
     check_future_date(start_datetime_object, end_datetime_object)
     start_formatted = format_date(start_datetime_object)
     end_formatted = format_date(end_datetime_object)
+    url = create_the_url(key, start_formatted, end_formatted)
+    data = make_request(url)
+    print(data)
 
 
 if __name__ == "__main__":
