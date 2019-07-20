@@ -54,6 +54,21 @@ def create_the_url(key, start, end):
     return "https://app.ticketmaster.com/discovery/v2/events?apikey={0}&locale=&preferredCountry=us&size=200" \
            "&startDateTime={1}&endDateTime={2}".format(key, start, end)
 
+def get_events(data):
+    states_dictionary = {}
+    for event in data["_embedded"]["events"]:
+        try:
+            try:
+                states_dictionary[event["_embedded"]["venues"][0]["state"]["stateCode"]].append(event)
+            except KeyError:
+                states_dictionary[event["_embedded"]["venues"][0]["state"]["stateCode"]] = [event]
+        except KeyError:
+            pass
+    return states_dictionary
+
+
+
+
 def main():
     key, start, end = get_args()
     start_datetime_object = validate_date(start)
@@ -63,7 +78,7 @@ def main():
     end_formatted = format_date(end_datetime_object)
     url = create_the_url(key, start_formatted, end_formatted)
     data = make_request(url)
-    print(data)
+    states_dictionary = get_events(data)
 
 
 if __name__ == "__main__":
