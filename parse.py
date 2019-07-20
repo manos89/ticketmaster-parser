@@ -53,8 +53,8 @@ def get_args():
     return args.key, args.start, args.end
 
 def create_the_url(key, start, end):
-    return "https://app.ticketmaster.com/discovery/v2/events?apikey={0}&locale=&preferredCountry=us&size=200" \
-           "&startDateTime={1}&endDateTime={2}".format(key, start, end)
+    return "https://app.ticketmaster.com/discovery/v2/events.json?apikey={0}&size=2" \
+           "&startDateTime={1}&endDateTime={2}&classificationName=Musician".format(key, start, end)
 
 def get_events(data):
     states_dictionary = {}
@@ -70,12 +70,12 @@ def get_events(data):
 
 
 def get_artist_with_most_shows(events):
-    artists = [artist["_embedded"]["attractions"][0]["id"] for artist in events]
+    artists = [artist["_embedded"]["attractions"][0]["name"] for artist in events]
     most_shows_artist = Counter(artists)
     return list(most_shows_artist.keys())[0]
 
 def get_venue_with_most_shows(events):
-    venues = [artist["_embedded"]["venues"][0]["id"] for artist in events]
+    venues = [artist["_embedded"]["venues"][0]["name"] for artist in events]
     most_shows_venues = Counter(venues)
     return list(most_shows_venues.keys())[0]
 
@@ -90,9 +90,9 @@ def main():
     data = make_request(url)
     states_dictionary = get_events(data)
     for key in states_dictionary.keys():
-        artist_id = get_artist_with_most_shows(states_dictionary[key])
-        venue_id = get_venue_with_most_shows(states_dictionary[key])
-        print(venue_id)
+        artist = get_artist_with_most_shows(states_dictionary[key])
+        venue = get_venue_with_most_shows(states_dictionary[key])
+
 
 
 
