@@ -4,6 +4,7 @@ import argparse
 import datetime
 import pandas as pd
 from collections import Counter
+from operator import itemgetter
 
 def validate_date(date):
     """
@@ -53,7 +54,7 @@ def get_args():
     return args.key, args.start, args.end
 
 def create_the_url(key, start, end):
-    return "https://app.ticketmaster.com/discovery/v2/events.json?apikey={0}&size=2" \
+    return "https://app.ticketmaster.com/discovery/v2/events.json?apikey={0}&size=200" \
            "&startDateTime={1}&endDateTime={2}&classificationName=Musician".format(key, start, end)
 
 def get_events(data):
@@ -79,6 +80,17 @@ def get_venue_with_most_shows(events):
     most_shows_venues = Counter(venues)
     return list(most_shows_venues.keys())[0]
 
+def most_expensive_ticket(events):
+    try:
+        sorted_by_price = sorted([e for e in events if "priceRanges" in e.keys()], key=lambda k: k['priceRanges'][0]["max"],
+                                 reverse=True)
+        return sorted_by_price[0]["name"], sorted_by_price[0]["priceRanges"][0]["max"], \
+               sorted_by_price[0]["_embedded"]["attractions"][0]["name"]
+    except IndexError:
+        print("The events don't have a price")
+        return "NA", "NA", "NA"
+
+
 def main():
     key, start, end = get_args()
     start_datetime_object = validate_date(start)
@@ -92,6 +104,8 @@ def main():
     for key in states_dictionary.keys():
         artist = get_artist_with_most_shows(states_dictionary[key])
         venue = get_venue_with_most_shows(states_dictionary[key])
+        max_event, max_price, max_artist = most_expensive_ticket(states_dictionary[key])
+        print(key, max_event, max_price, max_artist)
 
 
 
