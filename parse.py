@@ -22,6 +22,11 @@ def validate_date(date):
 
 
 def format_date(datetime_obj):
+    """
+    returns an objecet in the proper format for making the request YYYY-MM-DDTHH:mm:ssZ
+    :param datetime_obj: a datetime object (starting and ending date)
+    :return: a string which has the proper format
+    """
     return datetime_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -39,6 +44,11 @@ def check_future_date(start_datetime_object, end_datetime_object):
 
 
 def make_request(url):
+    """
+    Making the request and returns the response in JSON format
+    :param url: The url used to make the call
+    :return: returns the response in a JSON format
+    """
     r = requests.get(url)
     return json.loads(r.text)
 
@@ -59,11 +69,23 @@ def get_args():
 
 
 def create_the_url(key, start, end):
+    """
+    :param key: The API key
+    :param start: Starting Date in the appropriate string format
+    :param end: Ending Date in the appropriate string format
+    :return: the url properly formatted, containng the key and both the starting and ending dates
+    """
     return "https://app.ticketmaster.com/discovery/v2/events.json?apikey={0}&size=200" \
            "&startDateTime={1}&endDateTime={2}&classificationName=Musician".format(key, start, end)
 
 
 def get_events(data):
+    """
+    This function takes the response and creates a new dictionary in the format that is more useful for us.
+    The format is like this {"stateName": [event1, event2]}, where event1 and event2 are objects too.
+    :param data: The response in a JSON format
+    :return: A dictionary that has state names as keys and array of events as value
+    """
     states_dictionary = {}
     for event in data["_embedded"]["events"]:
         try:
@@ -77,18 +99,43 @@ def get_events(data):
 
 
 def get_artist_with_most_shows(events):
+    """
+    This function returns the artist with the most shows in a state. To achieve that we get as a parameter the events
+    in a state and we use the Counter function from the collections library.
+    First we get all the artist names in this state. Then we sort them (using the Counter) according on how many times
+    they appear in each state and we get the first (it's a reverse sort)
+    :param events: Events belonging to a specific state
+    :return: The artist with the most shows in each state
+    """
     artists = [artist["_embedded"]["attractions"][0]["name"] for artist in events]
     most_shows_artist = Counter(artists)
     return list(most_shows_artist.keys())[0]
 
 
 def get_venue_with_most_shows(events):
+    """
+    This function returns the venues with the most shows in a state. To achieve that we get as a parameter the events
+    in a state and we use the Counter function from the collections library.
+    First we get all the venues names in this state. Then we sort them (using the Counter) according on how many times
+    they appear in each state and we get the first (it's a reverse sort)
+    :param events: Events belonging to a specific state
+    :return: The venues with the most shows in each state
+    """
     venues = [artist["_embedded"]["venues"][0]["name"] for artist in events]
     most_shows_venues = Counter(venues)
     return list(most_shows_venues.keys())[0]
 
 
 def most_expensive_ticket(events):
+    """
+    To get the event with the most expensive price we have to sort them according to the price and then get the first
+    event.
+    :param events: Events belonging to a specific state
+    :return: 3 variable.
+            1) Name of the event with the most expensive price
+            2) Most expensive price
+            3) Name of the artist with the most expensive price
+    """
     try:
         sorted_by_price = sorted([e for e in events if "priceRanges" in e.keys()],
                                  key=lambda k: k['priceRanges'][0]["max"],
@@ -112,15 +159,15 @@ def main():
     states_dictionary = get_events(data)
     csvfile = open('results.csv', 'w')
     spamwriter = csv.writer(csvfile, delimiter=',', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
-    spamwriter.writerow(["State", "Musician with the most events", "Venue with the most events", "Most expensive ticket",
-                     "Most expensive ticket event name", "Most expensive ticket artist"])
+    spamwriter.writerow(
+        ["State", "Musician with the most events", "Venue with the most events", "Most expensive ticket",
+         "Most expensive ticket event name", "Most expensive ticket artist"])
     for key in states_dictionary.keys():
         artist = get_artist_with_most_shows(states_dictionary[key])
         venue = get_venue_with_most_shows(states_dictionary[key])
         max_event, max_price, max_artist = most_expensive_ticket(states_dictionary[key])
         spamwriter.writerow([key, artist, venue, max_price, max_event, max_artist])
     csvfile.close()
-
 
 
 if __name__ == "__main__":
