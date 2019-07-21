@@ -21,7 +21,19 @@ Take the input -> check dates format -> convert dates to datetime objects -> per
 ## 3) Collecting the needed results
   This is the most tricky step, as I had to group the events by state in order to collect the results.
   Assuming that you are familiar with lists and dictionaries I will try to explain the logic behind this grouping.
-  First, after converting the API's response to JSON I ended up with a list of dictionaries. Each dictionary has a different event, and   inside this event, there is the state, nested under the ["venues"][0]["state"} field.
+  First, after converting the API's response to JSON I ended up with a list of dictionaries. Each dictionary has a different event.
+  You can find the state nested under the ["venues"][0]["state"] field.
+  I did the grouping in this way:
+  a) Creating a new dictionary (states_dictionary)
+  b) Iterating through all the events
+  c) Adding the state as a key in this new dictionary and then appending the event as a value.
+  
+  To get a better view, here's an example of the states_dictionary:
+  original_response = [{event1}, {event2}, {event3}, {event4}]. 
+  Let's assume that event1 and event3 belong to California, event2 to New York, and event4 to Texas.
+  Our new states_dictionary will have this format:
+  states_dictionary = {"California": [{event1}, {event3}], "New York": [{event2}], "Texas": [{event4}]}
+  
   
 # How to run
 
