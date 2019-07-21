@@ -128,8 +128,8 @@ def get_venue_with_most_shows(events):
 
 def most_expensive_ticket(events):
     """
-    To get the event with the most expensive price we have to sort them according to the price and then get the first
-    event.
+    To get the event with the most expensive price we have to sort them according to the price and then return the
+    needed variables of the first event.
     :param events: Events belonging to a specific state
     :return: 3 variable.
             1) Name of the event with the most expensive price
@@ -148,14 +148,17 @@ def most_expensive_ticket(events):
 
 
 def main():
+    # 1st Step
     key, start, end = get_args()
     start_datetime_object = validate_date(start)
     end_datetime_object = validate_date(end)
     check_future_date(start_datetime_object, end_datetime_object)
     start_formatted = format_date(start_datetime_object)
     end_formatted = format_date(end_datetime_object)
+    # 2nd step
     url = create_the_url(key, start_formatted, end_formatted)
     data = make_request(url)
+    # 3rd step
     states_dictionary = get_events(data)
     csvfile = open('results.csv', 'w')
     spamwriter = csv.writer(csvfile, delimiter=',', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
