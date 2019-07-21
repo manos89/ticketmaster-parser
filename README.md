@@ -16,7 +16,7 @@ Take the input -> check dates format -> convert dates to datetime objects -> per
   - Create the url. We have a URL which has 3 placeholders. We replace them with the API key, starting date, and ending date                 accordingly.
   - Make the request and return the results in a JSON format. Making the request is exactly the same thing as visiting a webpage in our         browser. The browser displays the page while when we make the request from python we receive the code of this page.
   
-  ### Summary of second  step:
+  ### Summary of second step:
   create the url -> make the request -> return the response(code of the page) in a JSON format.
 ## 3) Collecting the needed results
   This is the most tricky step, as I had to group the events by state in order to collect the results.
@@ -34,6 +34,11 @@ Take the input -> check dates format -> convert dates to datetime objects -> per
   Our new states_dictionary will have this format:
 
   states_dictionary = {"California": [{event1}, {event3}], "New York": [{event2}], "Texas": [{event4}]}
+
+  Getting the most expensive event, price, and artist, after having done this was relatively simple, as I could iterate through each       state and access each state's events separately, and then I was able to get all the artists'/venues' names and find the one that         repeats itself the most, sort the events by price and pick the first price, name, and artist's name, and then write the results to a     CSV.
+  
+  ### Summary of third step:
+  create new dictionary -> adding each state as a key and appending each event to a list as a value -> iterating on the new dictionary's   keys -> getting artist with most shows in a state -> getting venues with most shows in a state -> getting max price, max price           artist's name, and max price event's name -> write to csv
   
   
 # How to run
