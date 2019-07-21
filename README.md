@@ -19,7 +19,10 @@ Take the input -> check dates format -> convert dates to datetime objects -> per
   ### Summary of second  step:
   create the url -> make the request -> return the response(code of the page) in a JSON format.
 ## 3) Collecting the needed results
-
+  This is the most tricky step, as I had to group the events by state in order to collect the results.
+  Assuming that you are familiar with lists and dictionaries I will try to explain the logic behind this grouping.
+  First, after converting the API's response to JSON I ended up with a list of dictionaries. Each dictionary has a different event, and   inside this event, there is the state, nested under the ["venues"][0]["state"} field.
+  
 # How to run
 
 To run this script you'll need to have python 3.7 (https://www.python.org/downloads/) and pip (https://pypi.org/project/pip/)
@@ -35,6 +38,6 @@ Here's an example on how to run the script:
 
 python parse.py --key 35dfsdffe342fef4534saed --start 2019-08-01 --end 2019-08-10
 
-You can replace "35dfsdffe342fef4534saed" with your key "2019-08-01" with the starting date you want and "2019-08-10" with the ending date you want.
+You can replace "35dfsdffe342fef4534saed" with your key "2019-08-01" with the starting date you want and "2019-08-10" with the ending date you want. Visit this page -> https://developer-acct.ticketmaster.com/user/login to generate your API key.
 
 Please, don't forget that you will have to navigate to the directory where the script is. You can do this in many ways, depending on the OS you use.
