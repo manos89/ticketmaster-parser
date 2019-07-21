@@ -32,6 +32,7 @@ Take the input -> check dates format -> convert dates to datetime objects -> per
   original_response = [{event1}, {event2}, {event3}, {event4}]. 
   Let's assume that event1 and event3 belong to California, event2 to New York, and event4 to Texas.
   Our new states_dictionary will have this format:
+
   states_dictionary = {"California": [{event1}, {event3}], "New York": [{event2}], "Texas": [{event4}]}
   
   
